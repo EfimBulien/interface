@@ -6,8 +6,8 @@ import string
 web3 = Web3(Web3.HTTPProvider('http://localhost:8545'))
 web3.middleware_onion.inject(geth_poa_middleware, layer=0)
 
-accounts = web3.eth.accounts[0]
-address = '0x1234567890123456789012345678901234567890'
+accounts = web3.eth.accounts
+address = '0x4B20993Bc481177ec7E8f571ceCaE8A9e22C02db'
 abi = '''[
 	{
 		"anonymous": false,
@@ -943,3 +943,6 @@ def main():
                     is_not_auth = True
                 case _:
                     print('Вы ввели некорректное число!')
+
+
+main()
