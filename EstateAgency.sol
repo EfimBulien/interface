@@ -127,7 +127,7 @@ contract EstateAgency {
         return estates;
     }
     
-    function getAllIds() public view returns (Advertisement[] memory) { 
+    function getAllAds() public view returns (Advertisement[] memory) { 
         return advertisements;
     }
 }
