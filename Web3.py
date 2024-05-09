@@ -756,7 +756,11 @@ def create_estate(account):
     global type, rooms
     name = str(input('Введите название недвижимости: '))
     address = str(input('Введите адрес недвижимости: '))
-    print('0. Дом. \n1. Апартаменты. \n2. Квартира. \n3. Лофт.')
+
+    print('0. Дом.')
+    print('1. Апартаменты.')
+    print('2. Квартира.')
+    print('3. Лофт.')
 
     while True:
         try:
@@ -853,7 +857,9 @@ def update_estate(account):
 
     while True:
         try:
-            status = bool(input('Заблокировать (false) или разблокировать (true) недвижимость?\n'))
+            print('Заблокировать объявление - false.')
+            print('Разблокировать объявление - true.')
+            status = bool(input('Выберите действие: '))
             break
         except ValueError:
             print('Вы ввели некорректое значение.')
@@ -943,6 +949,3 @@ def main():
                     is_not_auth = True
                 case _:
                     print('Вы ввели некорректное число!')
-
-
-main()
