@@ -7,7 +7,7 @@ web3 = Web3(Web3.HTTPProvider('http://localhost:8545'))
 web3.middleware_onion.inject(geth_poa_middleware, layer=0)
 
 accounts = web3.eth.accounts
-address = "0x7270701c53C3fCEcBbf25a5108882c055FF41cF1"
+address = '0x7270701c53C3fCEcBbf25a5194672c055FF41cF1'
 abi = '''[
 	{
 		"anonymous": false,
