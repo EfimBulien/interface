@@ -693,6 +693,18 @@ abi = '''[
 contract = web3.eth.contract(address=address, abi=abi)
 
 
+def check(password):
+    digits = any(char in string.digits for char in password)
+    punctuation = any(char in string.punctuation for char in password)
+    lowers = any(char in string.ascii_lowercase for char in password)
+    capitals = any(char in string.ascii_uppercase for char in password)
+
+    if digits and punctuation and lowers and capitals and len(password) >= 12:
+        return True
+    else:
+        return False
+
+
 def authorization():
     key = str(input('Введите публичный ключ: '))
     password = str(input('Введите пароль: '))
@@ -730,18 +742,6 @@ def withdraw(account):
         print('Транзакция на снятие средств успешно отправлена. Хэш транзакции: ', hash.hex())
     except Exception as e:
         print(f'Ошибка при снятии средств: {e}')
-
-
-def check(password):
-    digits = any(char in string.digits for char in password)
-    punctuation = any(char in string.punctuation for char in password)
-    lowers = any(char in string.ascii_lowercase for char in password)
-    capitals = any(char in string.ascii_uppercase for char in password)
-
-    if digits and punctuation and lowers and capitals and len(password) >= 12:
-        return True
-    else:
-        return False
 
 
 def get_balance(account):
@@ -814,6 +814,7 @@ def create_ad(account):
 
 
 def purchase_estate(account):
+    global id
     try:
         ads = contract.functions.getAllAds().call()
         print(f'Список объявлений: {ads}')
@@ -835,6 +836,7 @@ def purchase_estate(account):
 
 
 def update_estate(account):
+    global id, status
     try:
         ests = contract.functions.getAllEstates().call()
         print(f'Список недвижимостей: {ests}')
