@@ -1,13 +1,12 @@
-from web3 import Web3
-from web3.middleware import geth_poa_middleware
-
 import string
+from web3.middleware import *
 
 web3 = Web3(Web3.HTTPProvider('http://localhost:8545'))
 web3.middleware_onion.inject(geth_poa_middleware, layer=0)
 
 accounts = web3.eth.accounts
 address = '0xac951C9B7501F821D13e4d89f8386F7C1b355aE7'
+
 abi = '''[
 	{
 		"anonymous": false,
@@ -690,16 +689,17 @@ abi = '''[
 		"type": "function"
 	}
 ]'''
+
 contract = web3.eth.contract(address=address, abi=abi)
 
 
 def check(password):
-    _digits = any(char in string.digits for char in password)
+    digits = any(char in string.digits for char in password)
     punctuation = any(char in string.punctuation for char in password)
     lowers = any(char in string.ascii_lowercase for char in password)
     capitals = any(char in string.ascii_uppercase for char in password)
 
-    if _digits and punctuation and lowers and capitals and len(password) >= 12:
+    if digits and punctuation and lowers and capitals and len(password) >= 12:
         return True
     else:
         return False
@@ -791,7 +791,7 @@ def create_estate(account):
 
 
 def create_ad(account):
-    global price
+    global price, _id
     try:
         ests = contract.functions.getAllEstates().call()
         print(f'Список недвижимостей: {ests}')
@@ -817,7 +817,7 @@ def create_ad(account):
             print('Вы ввели некорректое значение.')
             continue
     try:
-        _hash = contract.functions.createAd(id, price).transact({'from': account})
+        _hash = contract.functions.createAd(_id, price).transact({'from': account})
         print(f'Хэш транзакции: {_hash.hex()}')
     except Exception as _e:
         print(f'Ошибка при создании объявления: {_e}')
@@ -839,7 +839,7 @@ def purchase_estate(account):
             continue
     try:
         _hash = contract.functions.purchaseEstate(id).transact({'from': account})
-        print(f'Хэш транзакции: {hash.hex()}')
+        print(f'Хэш транзакции: {_hash.hex()}')
     except Exception as _e:
         print(f'Ошибка при покупке недвижимости: {_e}')
 
