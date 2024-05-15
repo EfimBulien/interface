@@ -824,6 +824,7 @@ def create_ad(account):
 
 
 def purchase_estate(account):
+    global _id
     try:
         ads = contract.functions.getAllAds().call()
         print(f'Список объявлений: {ads}')
