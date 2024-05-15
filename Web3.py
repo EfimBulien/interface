@@ -838,7 +838,7 @@ def purchase_estate(account):
             print('Вы ввели некорректое значение.')
             continue
     try:
-        _hash = contract.functions.purchaseEstate(id).transact({'from': account})
+        _hash = contract.functions.purchaseEstate(_id).transact({'from': account})
         print(f'Хэш транзакции: {_hash.hex()}')
     except Exception as _e:
         print(f'Ошибка при покупке недвижимости: {_e}')
