@@ -7,7 +7,7 @@ web3 = Web3(Web3.HTTPProvider('http://localhost:8545'))
 web3.middleware_onion.inject(geth_poa_middleware, layer=0)
 
 accounts = web3.eth.accounts
-address = '0x4B20993Bc481177ec7E8f571ceCaE8A9e22C02db'
+address = '0xac951C9B7501F821D13e4d89f8386F7C1b355aE7'
 abi = '''[
 	{
 		"anonymous": false,
@@ -694,12 +694,12 @@ contract = web3.eth.contract(address=address, abi=abi)
 
 
 def check(password):
-    digits = any(char in string.digits for char in password)
+    _digits = any(char in string.digits for char in password)
     punctuation = any(char in string.punctuation for char in password)
     lowers = any(char in string.ascii_lowercase for char in password)
     capitals = any(char in string.ascii_uppercase for char in password)
 
-    if digits and punctuation and lowers and capitals and len(password) >= 12:
+    if _digits and punctuation and lowers and capitals and len(password) >= 12:
         return True
     else:
         return False
@@ -724,8 +724,8 @@ def registration():
             break
         else:
             print('Вы ввели слишком слабый пароль.')
-    address = web3.geth.personal.new_account(password)
-    print(f'Адрес нового аккаунта: {address}')
+    _add = web3.geth.personal.new_account(password)
+    print(f'Адрес нового аккаунта: {_add}')
 
 
 def withdraw(account):
@@ -733,13 +733,16 @@ def withdraw(account):
     while True:
         try:
             amount = int(input('Введите сумму для снятия: '))
+            if amount <= 0:
+                print('Сумма должна быть больше нуля.')
+                continue
             break
         except ValueError:
             print('Вы ввели некорректое значение.')
             continue
     try:
-        hash = contract.functions.withdraw(amount).transact({'from': account})
-        print('Транзакция на снятие средств успешно отправлена. Хэш транзакции: ', hash.hex())
+        _hash = contract.functions.withdraw(amount).transact({'from': account})
+        print('Транзакция на снятие средств успешно отправлена. Хэш транзакции: ', _hash.hex())
     except Exception as e:
         print(f'Ошибка при снятии средств: {e}')
 
@@ -753,9 +756,9 @@ def get_balance(account):
 
 
 def create_estate(account):
-    global type, rooms
-    name = str(input('Введите название недвижимости: '))
-    address = str(input('Введите адрес недвижимости: '))
+    global _type, _rooms
+    _name = str(input('Введите название недвижимости: '))
+    _add = str(input('Введите адрес недвижимости: '))
 
     print('0. Дом.')
     print('1. Апартаменты.')
@@ -764,7 +767,7 @@ def create_estate(account):
 
     while True:
         try:
-            type = int(input('Введите тип недвижимости: '))
+            _type = int(input('Введите тип недвижимости: '))
             break
         except ValueError:
             print('Вы ввели некорректое значение.')
@@ -772,7 +775,7 @@ def create_estate(account):
 
     while True:
         try:
-            rooms = int(input('Введите количество комнат: '))
+            _rooms = int(input('Введите количество комнат: '))
             break
         except ValueError:
             print('Вы ввели некорректое значение.')
@@ -781,23 +784,23 @@ def create_estate(account):
     description = str(input('Введите описание недвижимости: '))
 
     try:
-        hash = contract.functions.createEstate(name, address, type, rooms, description).transact({'from': account})
-        print(f'Хэш транзакции: {hash.hex()}')
+        _hash = contract.functions.createEstate(_name, _add, _type, _rooms, description).transact({'from': account})
+        print(f'Хэш транзакции: {_hash.hex()}')
     except Exception as e:
         print(f'Ошибка при создании недвижимости: {e}')
 
 
 def create_ad(account):
-    global id, price
+    global price
     try:
         ests = contract.functions.getAllEstates().call()
         print(f'Список недвижимостей: {ests}')
-    except Exception as e:
-        print(f'Ошибка при выводе недвижимостей: {e}')
+    except Exception as _e:
+        print(f'Ошибка при выводе недвижимостей: {_e}')
 
     while True:
         try:
-            id = int(input('Введите ID недвижимости: '))
+            _id = int(input('Введите ID недвижимости: '))
             break
         except ValueError:
             print('Вы ввели некорректое значение.')
@@ -806,19 +809,21 @@ def create_ad(account):
     while True:
         try:
             price = int(input('Введите цену недвижимости: '))
+            if price <= 0:
+                print('Цена должна быть больше нуля.')
+                continue
             break
         except ValueError:
             print('Вы ввели некорректое значение.')
             continue
     try:
-        hash = contract.functions.createAd(id, price).transact({'from': account})
-        print(f'Хэш транзакции: {hash.hex()}')
-    except Exception as e:
-        print(f'Ошибка при создании объявления: {e}')
+        _hash = contract.functions.createAd(id, price).transact({'from': account})
+        print(f'Хэш транзакции: {_hash.hex()}')
+    except Exception as _e:
+        print(f'Ошибка при создании объявления: {_e}')
 
 
 def purchase_estate(account):
-    global id
     try:
         ads = contract.functions.getAllAds().call()
         print(f'Список объявлений: {ads}')
@@ -827,29 +832,29 @@ def purchase_estate(account):
 
     while True:
         try:
-            id = int(input('Введите ID обьявления: '))
+            _id = int(input('Введите ID обьявления: '))
             break
         except ValueError:
             print('Вы ввели некорректое значение.')
             continue
     try:
-        hash = contract.functions.purchaseEstate(id).transact({'from': account})
+        _hash = contract.functions.purchaseEstate(id).transact({'from': account})
         print(f'Хэш транзакции: {hash.hex()}')
-    except Exception as e:
-        print(f'Ошибка при покупке недвижимости: {e}')
+    except Exception as _e:
+        print(f'Ошибка при покупке недвижимости: {_e}')
 
 
 def update_estate(account):
-    global id, status
+    global _id, _status
     try:
         ests = contract.functions.getAllEstates().call()
         print(f'Список недвижимостей: {ests}')
-    except Exception as e:
-        print(f'Ошибка при выводе недвижимостей: {e}')
+    except Exception as _e:
+        print(f'Ошибка при выводе недвижимостей: {_e}')
 
     while True:
         try:
-            id = int(input('Введите ID недвижимости: '))
+            _id = int(input('Введите ID недвижимости: '))
             break
         except ValueError:
             print('Вы ввели некорректое значение.')
@@ -859,29 +864,29 @@ def update_estate(account):
         try:
             print('Заблокировать объявление - false.')
             print('Разблокировать объявление - true.')
-            status = bool(input('Выберите действие: '))
+            _status = bool(input('Выберите действие: '))
             break
         except ValueError:
             print('Вы ввели некорректое значение.')
             continue
     try:
-        hash = contract.functions.updateEstateStatus(id, status).transact({'from': account})
-        print(f'Хэш транзакции: {hash.hex()}')
-    except Exception as e:
-        print(f'Ошибка при обновлении статуса недвижимости: {e}')
+        _hash = contract.functions.updateEstateStatus(_id, _status).transact({'from': account})
+        print(f'Хэш транзакции: {_hash.hex()}')
+    except Exception as _e:
+        print(f'Ошибка при обновлении статуса недвижимости: {_e}')
 
 
 def update_ad(account):
-    global id, status
+    global _status, _id
     try:
-        ads = contract.functions.getAds().call()
+        ads = contract.functions.getAllAds().call()
         print(f'Список объявлений: {ads}')
-    except Exception as e:
-        print(f'Ошибка при выводе объявлений: {e}')
+    except Exception as _e:
+        print(f'Ошибка при выводе объявлений: {_e}')
 
     while True:
         try:
-            id = int(input('Введите ID объявления: '))
+            _id = int(input('Введите ID объявления: '))
             break
         except ValueError:
             print("Такого ID нет.")
@@ -891,14 +896,14 @@ def update_ad(account):
         try:
             print('0. Открыть объявление.')
             print('1. Закрыть объявление.')
-            status = int(input('Выберите действие: '))
+            _status = int(input('Выберите действие: '))
             break
         except ValueError:
             print('Вы ввели некорректное число!')
             continue
     try:
-        hash = contract.functions.updateAdStatus(id, status).transact({'from': account})
-        print(f'Хэш транзакции: {hash.hex()}')
+        _hash = contract.functions.updateAdStatus(_id, _status).transact({'from': account})
+        print(f'Хэш транзакции: {_hash.hex()}')
     except Exception as e:
         print(f'Ошибка при обновлении статуса объявления: {e}')
 
@@ -910,14 +915,17 @@ def main():
         if is_not_auth:
             print('1. Создать аккаунт.')
             print('2. Войти в аккаунт.')
+            print('0. Завершить работу программы.')
             selection = int(input('Выберите действие: '))
             match selection:
+                case 0:
+                    return
                 case 1:
+                    registration()
+                case 2:
                     account = authorization()
                     if account is not None:
                         is_not_auth = False
-                case 2:
-                    main()
                 case _:
                     print('Вы ввели некорректное число!')
         else:
@@ -949,3 +957,7 @@ def main():
                     is_not_auth = True
                 case _:
                     print('Вы ввели некорректное число!')
+
+
+if __name__ == '__main__':
+    main()
