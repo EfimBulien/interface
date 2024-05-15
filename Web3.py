@@ -450,6 +450,56 @@ abi = '''[
 	},
 	{
 		"inputs": [],
+		"name": "getAllAds",
+		"outputs": [
+			{
+				"components": [
+					{
+						"internalType": "address",
+						"name": "owner",
+						"type": "address"
+					},
+					{
+						"internalType": "address",
+						"name": "buyer",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "price",
+						"type": "uint256"
+					},
+					{
+						"internalType": "enum EstateAgency.AdvertisementStatus",
+						"name": "adStatus",
+						"type": "uint8"
+					},
+					{
+						"internalType": "uint256",
+						"name": "estateID",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "dateTime",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "adID",
+						"type": "uint256"
+					}
+				],
+				"internalType": "struct EstateAgency.Advertisement[]",
+				"name": "",
+				"type": "tuple[]"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
 		"name": "getAllEstates",
 		"outputs": [
 			{
@@ -496,56 +546,6 @@ abi = '''[
 					}
 				],
 				"internalType": "struct EstateAgency.Estate[]",
-				"name": "",
-				"type": "tuple[]"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "getAllIds",
-		"outputs": [
-			{
-				"components": [
-					{
-						"internalType": "address",
-						"name": "owner",
-						"type": "address"
-					},
-					{
-						"internalType": "address",
-						"name": "buyer",
-						"type": "address"
-					},
-					{
-						"internalType": "uint256",
-						"name": "price",
-						"type": "uint256"
-					},
-					{
-						"internalType": "enum EstateAgency.AdvertisementStatus",
-						"name": "adStatus",
-						"type": "uint8"
-					},
-					{
-						"internalType": "uint256",
-						"name": "estateID",
-						"type": "uint256"
-					},
-					{
-						"internalType": "uint256",
-						"name": "dateTime",
-						"type": "uint256"
-					},
-					{
-						"internalType": "uint256",
-						"name": "adID",
-						"type": "uint256"
-					}
-				],
-				"internalType": "struct EstateAgency.Advertisement[]",
 				"name": "",
 				"type": "tuple[]"
 			}
