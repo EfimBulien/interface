@@ -1,5 +1,6 @@
 import string
 from web3.middleware import *
+from web3 import Web3
 
 web3 = Web3(Web3.HTTPProvider('http://localhost:8545'))
 web3.middleware_onion.inject(geth_poa_middleware, layer=0)
@@ -913,51 +914,54 @@ def main():
     is_not_auth = True
     account = ''
     while True:
-        if is_not_auth:
-            print('1. Создать аккаунт.')
-            print('2. Войти в аккаунт.')
-            print('0. Завершить работу программы.')
-            selection = int(input('Выберите действие: '))
-            match selection:
-                case 0:
-                    return
-                case 1:
-                    registration()
-                case 2:
-                    account = authorization()
-                    if account is not None:
-                        is_not_auth = False
-                case _:
-                    print('Вы ввели некорректное число!')
-        else:
-            print('1. Купить недвижимость.')
-            print('2. Создать недвижимость.')
-            print('3. Создать объявление.')
-            print('4. Обновить недвижимость.')
-            print('5. Обновить объявление.')
-            print('6. Снять средства с аккаунта.')
-            print('7. Вывести баланс аккаунта.')
-            print('0. Выйти')
-            selection = int(input('Выберите действие: '))
-            match selection:
-                case 1:
-                    purchase_estate(account)
-                case 2:
-                    create_estate(account)
-                case 3:
-                    create_ad(account)
-                case 4:
-                    update_estate(account)
-                case 5:
-                    update_ad(account)
-                case 6:
-                    withdraw(account)
-                case 7:
-                    print(f'Баланс аккаунта: {web3.eth.get_balance(account)} WEI')
-                case 0:
-                    is_not_auth = True
-                case _:
-                    print('Вы ввели некорректное число!')
+        try:
+            if is_not_auth:
+                print('1. Создать аккаунт.')
+                print('2. Войти в аккаунт.')
+                print('0. Завершить работу программы.')
+                selection = int(input('Выберите действие: '))
+                match selection:
+                    case 0:
+                        return
+                    case 1:
+                        registration()
+                    case 2:
+                        account = authorization()
+                        if account is not None:
+                            is_not_auth = False
+                    case _:
+                        print('Вы ввели некорректное число!')
+            else:
+                print('1. Купить недвижимость.')
+                print('2. Создать недвижимость.')
+                print('3. Создать объявление.')
+                print('4. Обновить недвижимость.')
+                print('5. Обновить объявление.')
+                print('6. Снять средства с аккаунта.')
+                print('7. Вывести баланс аккаунта.')
+                print('0. Выйти')
+                selection = int(input('Выберите действие: '))
+                match selection:
+                    case 1:
+                        purchase_estate(account)
+                    case 2:
+                        create_estate(account)
+                    case 3:
+                        create_ad(account)
+                    case 4:
+                        update_estate(account)
+                    case 5:
+                        update_ad(account)
+                    case 6:
+                        withdraw(account)
+                    case 7:
+                        print(f'Баланс аккаунта: {web3.eth.get_balance(account)} WEI')
+                    case 0:
+                        is_not_auth = True
+                    case _:
+                        print('Вы ввели некорректное число!')
+        except ValueError:
+            print('Вы ввели некорректое значение.')
 
 
 if __name__ == '__main__':
