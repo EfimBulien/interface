@@ -11,4 +11,10 @@ geth --datadir initBlockchain --networkid 1234 --unlock 0x115592657925116dC71931
 geth attach --datadir initBlockchain ipc:\\.\pipe\geth.ipc
 
 geth --datadir initBlockchain --networkid 1234 --http --http.corsdomain "*" --unlock 0x115592657925116dC719316450E4862CB1713A30 --allow-insecure-unlock --http.api "eth,web3,personal,net" --nodiscover --verbosity 3 --mine --miner.etherbase 0x115592657925116dC719316450E4862CB1713A30
-пароль: 1
+
+mac os:
+
+/Users/efim/geth-1.11.6/geth --datadir initBlockchain --networkid 1234 --http --http.corsdomain "*" --unlock 0x115592657925116dC719316450E4862CB1713A30 --allow-insecure-unlock --http.api "eth,web3,personal,net" --nodiscover --verbosity 3 --mine --miner.etherbase 0x115592657925116dC719316450E4862CB1713A30
+/Users/efim/geth-alltools-1.11.6/geth --datadir initBlockchain --networkid 1234 --http --http.corsdomain "*" --unlock 0x115592657925116dC719316450E4862CB1713A30 --allow-insecure-unlock --http.api "eth,web3,personal,net" --nodiscover --verbosity 3 --mine --miner.etherbase 0x115592657925116dC719316450E4862CB1713A30
+
+password: 1
